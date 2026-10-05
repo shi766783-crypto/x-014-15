@@ -11,18 +11,30 @@ export const config = {
     { label: '外借未还', tone: 'blue', value: (s) => s.usages.filter((x) => x.status === '借用中').length },
   ],
   form: { title: '新建证件档案', collection: 'documents', fields: [
-    ['name', '证件名称', '身份证'], ['category', '类别', '身份类'], ['holder', '持有人', '林小满'], ['number', '证件号码', '110***********'], ['issued', '签发日期', '2023-01-01', 'date'], ['expires', '有效期至', '2033-01-01', 'date'], ['issuer', '发证机关', 'XX市公安局'], ['location', '存放位置', '保险柜'], ['copyLocation', '复印件位置', '云盘 / 家庭共享'], ['notes', '备注', ''],
+    ['name', '证件名称', '身份证'], ['category', '类别', '身份类'], ['holderId', '持有人', '', 'member'], ['number', '证件号码', '110***********'], ['issued', '签发日期', '2023-01-01', 'date'], ['expires', '有效期至', '2033-01-01', 'date'], ['issuer', '发证机关', 'XX市公安局'], ['location', '存放位置', '保险柜'], ['copyLocation', '复印件位置', '云盘 / 家庭共享'], ['notes', '备注', ''],
   ]},
   categories: ['身份类', '资产类', '合同类', '医疗类', '教育类', '其他'],
   achievements: ['首次建档', '证件齐全', '零过期遗忘', '续办及时', '家庭档案大师', '收纳有序', '安全存档', '保险规划师', '使用有迹', '家庭守护者', '资料无忧', '档案领航员']
 }
 export const seed = {
-  documents: [
-    { id: 'doc-1', name: '林小满身份证', category: '身份类', holder: '林小满', number: '110***********', issued: '2023-01-18', expires: '2033-01-18', issuer: '杭州市公安局', location: '保险柜 · A-02', copyLocation: '家庭云盘 / 身份证', notes: '正反面已扫描' },
-    { id: 'doc-2', name: '家庭医疗保险合同', category: '医疗类', holder: '林家', number: 'POL-2026-019', issued: '2026-01-01', expires: '2026-11-20', issuer: '安和保险', location: '书房文件盒', copyLocation: '云盘 / 保单', notes: '续保前确认受益人' },
-    { id: 'doc-3', name: '周末房产合同', category: '资产类', holder: '林小满', number: 'PROP-0081', issued: '2024-06-12', expires: '2026-08-10', issuer: '杭城置业', location: '主卧抽屉', copyLocation: '云盘 / 房产', notes: '已过期的合同提醒仅供归档' },
+  version: 2,
+  members: [
+    { id: 'member-lin', name: '林小满', aliases: ['小满', '林小满（本人）'] },
+    { id: 'member-zhou', name: '周予安', aliases: ['予安', '周予安（本人）'] },
   ],
-  usages: [{ id: 'use-1', documentId: 'doc-1', date: '2026-09-16', purpose: '办理银行业务', borrower: '林小满', status: '借用中', note: '周五归还' }, { id: 'use-2', documentId: 'doc-2', date: '2026-08-11', purpose: '理赔资料', borrower: '林小满', status: '已归还', note: '' }],
+  documents: [
+    { id: 'doc-1', name: '林小满身份证', category: '身份类', holder: '林小满', holderId: 'member-lin', number: '110***********', issued: '2023-01-18', expires: '2033-01-18', issuer: '杭州市公安局', location: '保险柜 · A-02', copyLocation: '家庭云盘 / 身份证', notes: '正反面已扫描' },
+    { id: 'doc-2', name: '家庭医疗保险合同', category: '医疗类', holder: '林家', number: 'POL-2026-019', issued: '2026-01-01', expires: '2026-11-20', issuer: '安和保险', location: '书房文件盒', copyLocation: '云盘 / 保单', notes: '续保前确认受益人' },
+    { id: 'doc-3', name: '周末房产合同', category: '资产类', holder: '林小满', holderId: 'member-lin', number: 'PROP-0081', issued: '2024-06-12', expires: '2026-08-10', issuer: '杭城置业', location: '主卧抽屉', copyLocation: '云盘 / 房产', notes: '已过期的合同提醒仅供归档' },
+    { id: 'doc-4', name: '林小满驾驶证', category: '身份类', holder: '小满', holderId: 'member-lin', number: 'DRV-0082', issued: '2022-03-05', expires: '2028-03-05', issuer: '杭州市公安局交通管理局', location: '钱包内', copyLocation: '家庭云盘 / 驾驶证', notes: '' },
+    { id: 'doc-5', name: '周予安护照', category: '身份类', holder: '周予安', holderId: 'member-zhou', number: 'E12345678', issued: '2024-09-01', expires: '2034-09-01', issuer: '国家移民管理局', location: '保险柜 · B-01', copyLocation: '家庭云盘 / 护照', notes: '' },
+    { id: 'doc-6', name: '周予安教师资格证', category: '教育类', holder: '予安', holderId: 'member-zhou', number: 'TCH-2026-77', issued: '2026-06-20', expires: '2099-06-20', issuer: '教育行政部门', location: '书房文件盒', copyLocation: '家庭云盘 / 资质', notes: '定期注册' },
+  ],
+  usages: [
+    { id: 'use-1', documentId: 'doc-1', date: '2026-09-16', purpose: '办理银行业务', borrower: '林小满', borrowerId: 'member-lin', status: '借用中', note: '周五归还' },
+    { id: 'use-2', documentId: 'doc-2', date: '2026-08-11', purpose: '理赔资料', borrower: '林小满', borrowerId: 'member-lin', status: '已归还', note: '' },
+    { id: 'use-3', documentId: 'doc-5', date: '2026-07-02', purpose: '出差办理签证', borrower: '予安', borrowerId: 'member-zhou', status: '已归还', note: '' },
+  ],
   policies: [{ id: 'pol-1', company: '安和保险', type: '家庭医疗险', number: 'AH-33001', insured: '林家', expires: '2026-11-20', premium: 2890, payment: '年缴' }],
 }
 export { days }
